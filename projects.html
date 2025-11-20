@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects | LaToya Favre</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- NAVBAR (same as home) -->
+  <header class="site-header">
+    <div class="container nav-container">
+      <div class="logo">
+        <span class="logo-mark">LF</span>
+        <span class="logo-text">LaToya Favre</span>
+      </div>
+      <nav class="nav">
+        <a href="index.html#about">About</a>
+        <a href="projects.html">Projects</a>
+        <a href="index.html#writing">Writing</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- PAGE HERO -->
+  <section class="hero">
+    <div class="container">
+      <p class="eyebrow">Portfolio</p>
+      <h1>Projects & Case Studies</h1>
+      <p class="hero-subtitle">
+        A closer look at how I combine clinical psychology, behavioral data science, and informatics
+        to solve real problems in mental health and healthcare systems.
+      </p>
+    </div>
+  </section>
+
+  <!-- PROJECT GRID -->
+  <section class="section">
+    <div class="container">
+      <h2>Featured Projects</h2>
+      <p class="section-intro">
+        These projects represent my blend of clinical expertise, research foundations, and practical data science.
+        Links can point to GitHub repositories, slide decks, dashboards, or write-ups.
+      </p>
+
+      <div class="card-grid">
+        <article class="card">
+          <h3>Clinical Workflow Optimization</h3>
+          <p class="card-tagline">Reducing friction in psychological assessment workflows.</p>
+          <p>
+            End-to-end mapping and redesign of a clinic’s intake, assessment, and documentation workflow.
+            Identified bottlenecks, quantified time burden, and proposed automation and template solutions
+            to support clinicians.
+          </p>
+          <ul class="card-list">
+            <li>Process mapping & time-on-task analysis in Python</li>
+            <li>Recommendations for EHR-integrated templates</li>
+            <li>Focus on reducing cognitive load for clinicians</li>
+          </ul>
+          <a href="#" class="card-link">View project on GitHub (placeholder)</a>
+        </article>
+
+        <article class="card">
+          <h3>Mental Health Outcomes Modeling</h3>
+          <p class="card-tagline">Predicting clinical change using routine outcome measures.</p>
+          <p>
+            Used de-identified mental-health data to model symptom trajectories, identify predictors of
+            improvement, and flag patients at risk of dropout or non-response.
+          </p>
+          <ul class="card-list">
+            <li>Data wrangling & feature engineering in Python</li>
+            <li>Mixed-effects or regression models in R</li>
+            <li>Outcome dashboards for clinical and leadership stakeholders</li>
+          </ul>
+          <a href="#" class="card-link">View project on GitHub (placeholder)</a>
+        </article>
+
+        <article class="card">
+          <h3>Autism Diagnostic Correlates</h3>
+          <p class="card-tagline">Demographic, occupational & mental-health correlates of adult autism evaluations.</p>
+          <p>
+            Analytical exploration of adults undergoing autism diagnostic evaluations, examining demographics,
+            employment, mental-health history, and access factors to understand patterns and disparities.
+          </p>
+          <ul class="card-list">
+            <li>Structured dataset creation from clinical records</li>
+            <li>Descriptive & inferential analyses of diagnostic correlates</li>
+            <li>Communication of findings to both technical and clinical audiences</li>
+          </ul>
+          <a href="#" class="card-link">View project on GitHub (placeholder)</a>
+        </article>
+
+        <article class="card">
+          <h3>Automated Psychological Report Generation</h3>
+          <p class="card-tagline">From raw questionnaire data to narrative clinical reports.</p>
+          <p>
+            A Python-based system that parses standardized questionnaire responses, computes scores, and generates
+            narrative report text aligned with my clinical writing style, with future extensibility to LLM-assisted
+            refinement.
+          </p>
+          <ul class="card-list">
+            <li>Automated scoring & profile generation</li>
+            <li>Section-level narratives (e.g., Social Communication, Interests & Behaviors)</li>
+            <li>Designed for integration into existing assessment workflows</li>
+          </ul>
+          <a href="#" class="card-link">View project on GitHub (placeholder)</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <p>© <span id="year"></span> LaToya Favre. All rights reserved.</p>
+      <a href="#top" class="back-to-top">Back to top ↑</a>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
