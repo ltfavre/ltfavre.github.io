@@ -1,13 +1,21 @@
 :root {
-  --bg: #050810;
-  --bg-alt: #0c111c;
-  --card-bg: #111827;
-  --text: #f9fafb;
-  --muted: #9ca3af;
-  --accent: #22d3ee;     /* teal */
-  --accent-soft: rgba(34, 211, 238, 0.12);
-  --border-subtle: #1f2937;
+  :root {
+  /* Soft natural palette */
+  --bg: #F7F5F0;            /* cream */
+  --bg-alt: #FFFFFF;        /* soft white */
+  --card-bg: #FFFFFF;       /* card background */
+  
+  --text: #2D2D2A;          /* warm charcoal */
+  --muted: #6A6A65;         /* muted warm gray */
+
+  --accent: #C8D1C0;        /* sage */
+  --accent-soft: rgba(200, 209, 192, 0.25);
+
+  --accent-pink: #EAC1C1;   /* blush pink for highlights/local accents */
+  --border-subtle: #E0DDD6;
+
   --font-main: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
 }
 
 *,
