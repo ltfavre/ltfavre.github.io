@@ -1,5 +1,4 @@
 :root {
-  :root {
   /* Soft natural palette */
   --bg: #F7F5F0;            /* cream */
   --bg-alt: #FFFFFF;        /* soft white */
@@ -16,7 +15,6 @@
 
   --font-main: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
-}
 
 *,
 *::before,
@@ -26,9 +24,10 @@
 
 html,
 body {
-  margin: 0;
-  padding: 0;
-  scroll-behavior: smooth;
+  font-family: var(--font-main);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
 }
 
 body {
@@ -303,11 +302,10 @@ body {
 }
 
 .about-card {
-  background: rgba(15, 23, 42, 0.9);
-  border-radius: 1.2rem;
-  padding: 1.5rem 1.4rem;
-  border: 1px solid var(--border-subtle);
-  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.9);
+background: var(--card-bg);
+border: 1px solid var(--border-subtle);
+box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+color: var(--text);
 }
 
 .about-card h3 {
