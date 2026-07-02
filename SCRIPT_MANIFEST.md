@@ -25,3 +25,13 @@
 - The at-target data-prep branch now writes the `replacement_pool` sheet, so receipts correctly report replacement pool counts.
 - If the config workbook is open/locked during prep, a refreshed copy is saved under `outputs/config_refresh` instead of crashing.
 
+## Archived Project Scripts
+
+The `project_scripts/` folder contains source-only snapshots copied from sibling local projects for version control and audit:
+
+| Folder | Contents |
+| --- | --- |
+| `project_scripts/Demos/` | Python scripts copied from `C:\Users\UFAVRLA\PythonProjects\Demos`. |
+| `project_scripts/KTEA_CELF_LLM_Scoring_Lab/` | Python scripts copied from `C:\Users\UFAVRLA\PythonProjects\KTEA_CELF_LLM_Scoring_Lab`. |
+
+These snapshots intentionally exclude raw data, workbooks, PDFs, outputs, caches, and project metadata.
