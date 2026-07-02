@@ -1,0 +1,29 @@
+# Runtime/package internals
+_internal/
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Generated data and run artifacts
+logs/
+outputs/
+inputs/master_sample/
+inputs/replacement_pools/
+inputs/targets/
+inputs/raw_data/*
+!inputs/raw_data/README_PLACEHOLDER.txt
+
+# Packaged binaries
+*.exe
+*.lnk
+
+# Office temp/lock files
+~$*
+*.tmp
+
+# Local editor/OS noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.git_empty_before_init_*/
