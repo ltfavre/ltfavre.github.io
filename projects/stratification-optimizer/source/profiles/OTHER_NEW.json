@@ -1,0 +1,23 @@
+{
+  "id": "OTHER_NEW",
+  "display_name": "Other / New Assessment",
+  "version": "0.1",
+  "status": "Not Yet Configured",
+  "catalog_visibility": "administrator",
+  "source_config": "",
+  "forms": [],
+  "demographics": [],
+  "target_flags": [],
+  "runnable": false,
+  "capabilities": {"recruitment_planning": false, "sample_optimization": false, "targeted_swap": false},
+  "missing": {
+    "recruitment_planning": ["saved assessment mapping", "target definitions"],
+    "sample_optimization": ["validated schema adapter", "eligibility rules", "engine configuration"],
+    "targeted_swap": ["validated canonical locks"]
+  },
+  "schema_mapping": {},
+  "age_structure": [],
+  "eligibility_rules": [],
+  "languages": [],
+  "study_types": []
+}

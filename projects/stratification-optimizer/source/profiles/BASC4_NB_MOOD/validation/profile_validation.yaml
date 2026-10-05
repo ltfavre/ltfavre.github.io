@@ -1,0 +1,15 @@
+profile_id: BASC4_NB_MOOD
+profile_version: "1.3"
+required_sections:
+  data_specification: [variable_map, id_variable, forms, age_structure, languages, study_types, demographics]
+  sampling_specification: [engine_config, default_target_n, target_families, eligibility_rules, default_locks]
+  reporting_specification: [required_tables, comparison_columns, diff_formula]
+  output_specification: [required_resources, workflow_deliverables]
+required_workflow_resources:
+  recruitment_planning: [recruitment_targets, recruitment_template]
+  sample_optimization: [approved_targets, demographic_template, osep_template, clinical_template]
+  targeted_swap: [targeted_swap_template]
+regression_baseline:
+  expected_final_n: 2400
+  hard_constraints: Passed
+  reference_engine: scope/legacy/part_a.py + scope/legacy/part_b.py

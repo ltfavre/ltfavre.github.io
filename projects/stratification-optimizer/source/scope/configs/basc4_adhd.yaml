@@ -1,0 +1,205 @@
+# Test/form configuration for BASC-4 NB — ADHD Prenorming Sample
+#
+# This file externalizes every ADHD-form-specific constant that used to be
+# hardcoded inside "Optimization Engine Part A.py" / "Part B.py" so the same
+# engine code can run against a different test or clinical form by pointing
+# at a different config file (via OPT_ENGINE_TEST_CONFIG).
+
+display_name: "BASC-4 NB — ADHD"
+project: ADHD
+target_flag: tmp_ADHD
+target_pct: 5.0
+sex_col: sex
+female_value: "F"
+male_value: "M"
+
+demo_cols: [sex, eth, edl, region]
+flag_cols: [tmp_ADHD, tmp_EBD, tmp_ASD, tmp_DD, tmp_SLD, tmp_SLI, tmp_OTHER]
+age_source_cols: [agey, basc4_agey, o_basc4_agey, adjagey]
+key_cols: [teid, vform, agegrp]
+valid_edl_values: ["1", "2", "3", "4"]
+
+vform_order: [TRS_C, TRS_A, PRS_C, PRS_A, SRP_C, SRP_A]
+form_families: [TRS, PRS, SRP]
+
+# Per-rater-form first-administration eligibility rules (Part A/B pool build).
+pool_rules:
+  TRS_C:
+    file: basc4nb_scored_trsc_be.sas7bdat
+    standard_testid: [5882, 5797, 6007, 6015]
+    exclude_testid: [5803, 5809, 5893, 5904]
+    agegrp: [3, 4]
+  TRS_A:
+    file: basc4nb_scored_trsa_be.sas7bdat
+    standard_testid: [5886, 5800, 6008, 6016]
+    exclude_testid: [5806, 5811, 5897, 5906]
+    agegrp: [5, 6]
+  PRS_C:
+    file: basc4nb_scored_prsc_be.sas7bdat
+    standard_testid: [5883, 5798, 5935, 5953]
+    exclude_testid: [5804, 5810, 5894, 5905]
+    agegrp: [3, 4]
+  PRS_A:
+    file: basc4nb_scored_prsa_be.sas7bdat
+    standard_testid: [5887, 5801, 5937, 5955]
+    exclude_testid: [5807, 5812, 5898, 5907]
+    agegrp: [5, 6]
+  SRP_C:
+    file: basc4nb_scored_srpc_be.sas7bdat
+    standard_testid: [5885, 5799, 5936, 5954]
+    exclude_testid: [5805, 5896]
+    agegrp: [4]
+  SRP_A:
+    file: basc4nb_scored_srpa_be.sas7bdat
+    standard_testid: [5888, 5802, 5938, 5956]
+    exclude_testid: [5808, 5899]
+    agegrp: [5, 6]
+
+# Per (vform, agegrp) cell target N for Part B's repair-then-swap stage.
+target_cell_n:
+  - {vform: TRS_C, agegrp: 3, n: 200}
+  - {vform: TRS_C, agegrp: 4, n: 200}
+  - {vform: TRS_A, agegrp: 5, n: 200}
+  - {vform: TRS_A, agegrp: 6, n: 200}
+  - {vform: PRS_C, agegrp: 3, n: 200}
+  - {vform: PRS_C, agegrp: 4, n: 200}
+  - {vform: PRS_A, agegrp: 5, n: 200}
+  - {vform: PRS_A, agegrp: 6, n: 200}
+  - {vform: SRP_C, agegrp: 4, n: 400}
+  - {vform: SRP_A, agegrp: 5, n: 200}
+  - {vform: SRP_A, agegrp: 6, n: 200}
+
+final_total_n: 2400
+
+# Clinical (OSEP) representation targets, per whole rater-form.
+osep_targets:
+  tmp_ADHD: {target_pct: 5.0, weight: 1000000}
+  tmp_clin: {min_pct: 11.0, max_pct: 13.0, weight: 200000}
+  tmp_EBD: {target_pct: 0.70, weight: 40000}
+  tmp_ASD: {target_pct: 2.00, weight: 40000}
+  tmp_DD: {target_pct: 0.70, weight: 40000}
+  tmp_SLD: {target_pct: 3.00, weight: 40000}
+  tmp_SLI: {target_pct: 2.00, weight: 40000}
+
+# Demo/OSEP target workbook sheet names + fixed layout used when parsing
+# targets (parse_demo_targets) and writing results (write_demo_osep_workbook).
+demo_target_sheets: {trs: TRS, prs: PRS, srp: SRP}
+demo_write_layout:
+  agegrp_rows: {3: 8, 4: 10, 5: 12, 6: 14}
+  srp_agegrp_rows: {4: 8, 5: 10, 6: 12}
+  osep_form_to_col: {TRS_C: B, TRS_A: C, PRS_C: D, PRS_A: E, SRP_C: F, SRP_A: G}
+  osep_flag_to_row: {tmp_ADHD: 3, tmp_EBD: 4, tmp_ASD: 5, tmp_DD: 6, tmp_SLD: 7, tmp_SLI: 8, tmp_OTHER: 9, tmp_clin: 10}
+  byage_min_age: 6
+  byage_max_age: 18
+
+# Default input/output locations, relative to the project directory
+# (OPT_ENGINE_PROJECT_DIR). Every one of these can still be overridden
+# individually via its OPT_ENGINE_* environment variable at runtime.
+default_paths:
+  default_project_dir: "C:\\Users\\UFAVRLA\\PythonProjects\\BASC4_Prenorming"
+  fr_teid_file: "data_raw/teid_lists/fr_teid_v1.xlsx"
+  fr_admin_sheets: [adhdtch, adhdpar, adhdself]
+  default_master_input: "outputs/deliverables/12aug26/basc4nb_adhd_final_teids_12aug26.xlsx"
+  default_master_sheet: teid_list
+  case_swap_dir: "outputs/deliverables/12aug26"
+  target_workbook: "documentation/Demo and OSEP Targets Template.xlsx"
+  scored_data_dir: "data_raw/source_sas_data/ADHD"
+  part_a_output_root: "outputs/optimization_engine_part_a"
+  part_b_output_root: "outputs/optimization_engine_part_b"
+  case_swap_files:
+    - ADHD_PRS_A_AGEGRP5_case_swap.xlsx
+    - ADHD_PRS_A_AGEGRP6_case_swap.xlsx
+    - ADHD_PRS_C_AGEGRP3_case_swap.xlsx
+    - ADHD_PRS_C_AGEGRP4_case_swap.xlsx
+    - ADHD_SRP_A_AGEGRP5_case_swap.xlsx
+    - ADHD_SRP_A_AGEGRP6_case_swap.xlsx
+    - ADHD_SRP_C_AGEGRP4_case_swap.xlsx
+    - ADHD_TRS_A_AGEGRP5_case_swap.xlsx
+    - ADHD_TRS_A_AGEGRP6_case_swap.xlsx
+    - ADHD_TRS_C_AGEGRP3_case_swap.xlsx
+    - ADHD_TRS_C_AGEGRP4_case_swap.xlsx
+
+output_names:
+  updated_teid: BASC4NB_ADHD_updated_TEIDlist_post_stratification.xlsx
+  demo_osep: BASC4NB_ADHD_DEMO_OSEP_tables_post_stratification.xlsx
+  swap_table: BASC4NB_ADHD_TEID_swap_stratification_tables.xlsx
+
+engine_params:
+  max_candidates_per_remove: 20
+  num_workers: 8
+  scale: 1000
+  demo_weight: 1
+  swap_weight: 10
+  swap_lock_cols: [vform, agegrp]
+  max_solver_seconds: 300
+
+# Column export order for Part A's master_prepped/available_pool sheets.
+export_cols:
+  - project
+  - vform
+  - agegrp
+  - teid
+  - source_file
+  - testid
+  - adminorder
+  - sex
+  - eth
+  - ethdesc
+  - edl
+  - edcalcdesc
+  - region
+  - agey
+  - agem
+  - aged
+  - adjagey
+  - study
+  - services
+  - diagnosis
+  - tmp_ADHD
+  - tmp_EBD
+  - tmp_ASD
+  - tmp_DD
+  - tmp_SLD
+  - tmp_SLI
+  - tmp_OTHER
+  - tmp_clin
+  - part_a_added_for_exact_sex_balance
+
+# Column export order for Part B's final_all sheet.
+export_priority_cols:
+  - project
+  - vform
+  - form_type
+  - teid_sheet
+  - teid
+  - qtype
+  - ctype
+  - edition
+  - testlang
+  - testname
+  - sex
+  - eth
+  - ethdesc
+  - edl
+  - edcalcdesc
+  - region
+  - agey
+  - agem
+  - aged
+  - adjagey
+  - study
+  - services
+  - diagnosis
+  - tmp_ADHD
+  - tmp_EBD
+  - tmp_ASD
+  - tmp_DD
+  - tmp_SLD
+  - tmp_SLI
+  - tmp_OTHER
+  - tmp_clin
+  - agegrp
+  - testid
+  - adminorder
+  - source_file
+  - part_b_added_for_sex_n_balance

@@ -1,0 +1,145 @@
+{
+  "id": "CELF6",
+  "display_name": "CELF-6",
+  "version": "1.3",
+  "status": "Validated",
+  "source_config": "",
+  "forms": ["Record Form 1 (ages 5–8)", "Record Form 2 (ages 9–21)"],
+  "demographics": ["sex", "eth", "ped", "region"],
+  "target_flags": [
+    "C_LD", "C_HH", "C_ASDL", "C_SLDRW",
+    "OSEP_DD", "OSEP_ID", "OSEP_ADHD", "OSEP_SLD", "OSEP_SI", "OSEP_GT"
+  ],
+  "runnable": true,
+  "capabilities": {
+    "recruitment_planning": true,
+    "sample_optimization": false,
+    "targeted_swap": true
+  },
+  "missing": {
+    "sample_optimization": ["SCOPE connection for the validated CELF-6 optimizer"]
+  },
+  "schema_mapping": {
+    "teid": "teid",
+    "form": "form",
+    "age": "agey",
+    "age_group": "age_group",
+    "sex": "sex",
+    "ethnicity": "eth",
+    "education": "ped",
+    "region": "region",
+    "language": "testlang",
+    "study_type": "studytype"
+  },
+  "reporting_variables": {
+    "Age": {
+      "canonical": "age_group", "field": "age_group", "display": "Age",
+      "levels": [
+        "5:0–5:5", "5:6–5:11", "6:0–6:5", "6:6–6:11", "7:0–7:11", "8:0–8:11",
+        "9:0–9:11", "10:0–10:11", "11:0–11:11", "12:0–12:11", "13:0–13:11",
+        "14:0–14:11", "15:0–15:11", "16:0–16:11", "17:0–21:11"
+      ]
+    },
+    "Sex": {
+      "canonical": "sex", "field": "sex", "display": "Sex",
+      "levels": [{"value": "F", "label": "Female"}, {"value": "M", "label": "Male"}]
+    },
+    "Ethnicity": {
+      "canonical": "ethnicity", "field": "eth", "display": "Race/Ethnicity",
+      "levels": [
+        {"value": "AS", "label": "Asian"}, {"value": "BL", "label": "Black/African American"},
+        {"value": "HI", "label": "Hispanic/Latino"}, {"value": "OT", "label": "Other"},
+        {"value": "WH", "label": "White"}
+      ]
+    },
+    "Parent Education": {
+      "canonical": "education", "field": "ped", "display": "Parent Education",
+      "levels": ["1", "2", "3", "4", "5"]
+    },
+    "Region": {
+      "canonical": "region", "field": "region", "display": "Region",
+      "levels": [
+        {"value": "MW", "label": "Midwest"}, {"value": "NE", "label": "Northeast"},
+        {"value": "SO", "label": "South"}, {"value": "WE", "label": "West"}
+      ]
+    }
+  },
+  "age_structure": [
+    "5:0–5:5", "5:6–5:11", "6:0–6:5", "6:6–6:11",
+    "7:0–7:11", "8:0–8:11", "9:0–9:11", "10:0–10:11",
+    "11:0–11:11", "12:0–12:11", "13:0–13:11", "14:0–14:11",
+    "15:0–15:11", "16:0–16:11", "17:0–21:11"
+  ],
+  "osep_mappings": {
+    "clinical": ["C_LD", "C_HH", "C_ASDL", "C_SLDRW"],
+    "osep": ["OSEP_DD", "OSEP_ID", "OSEP_ADHD", "OSEP_SLD", "OSEP_SI", "OSEP_GT"]
+  },
+  "eligibility_rules": [
+    "Usable standardization records only",
+    "Record Form 1 is ages 5–8; Record Form 2 is ages 9–21",
+    "Official clinical/OSEP flags are primary; approved diagnosis rules may supplement documented shortages",
+    "Participant IDs are deduplicated before selection"
+  ],
+  "sampling_specification": {
+    "default_locks": ["form", "age_group", "sex"],
+    "targeted_swap_derivations": {
+      "form_age_ranges": [
+        {"value": "form_1", "min_age": 5, "max_age": 8},
+        {"value": "form_2", "min_age": 9, "max_age": 21}
+      ]
+    }
+  },
+  "languages": ["English"],
+  "study_types": ["Standardization", "Clinical", "OSEP"],
+  "reporting": {
+    "recruitment_template": "builtin:field_research",
+    "recruitment": {
+      "Standardization": {
+        "template": "CELF6/templates/recruitment/CELF6_STDZ_Field_Research_Report.xlsx",
+        "age_bands": ["5:0–5:5", "5:6–5:11", "6:0–6:5", "6:6–6:11", "7:0–7:11", "8:0–8:11", "9:0–9:11", "10:0–10:11", "11:0–11:11", "12:0–12:11", "13:0–13:11", "14:0–14:11", "15:0–15:11", "16:0–16:11", "17:0–21:11"],
+        "required_tables": ["Age", "Sex", "Ethnicity", "Parent Education", "Region", "Language", "Form"]
+      },
+      "Clinical": {
+        "template": "CELF6/templates/recruitment/CELF6_Clinical_Field_Research_Report.xlsx",
+        "age_bands": ["5:0–8:11", "9:0–21:11"],
+        "required_tables": ["Age", "Sex", "Ethnicity", "Parent Education", "Region", "Clinical", "Form"]
+      },
+      "OSEP": {
+        "template": "CELF6/templates/recruitment/CELF6_Clinical_Field_Research_Report.xlsx",
+        "age_bands": ["5:0–8:11", "9:0–21:11"],
+        "required_tables": ["Age", "Sex", "Ethnicity", "Parent Education", "Region", "OSEP", "Form"]
+      }
+    },
+    "optimization_template": "profiles/_shared/templates/SCOPE_Demographic_Table_Templates.xlsx",
+    "targeted_swap_template": "CELF6/templates/targeted_swap/CELF6_DEMO_OSEP_tables.xlsx",
+    "required_tables": {
+      "demographics": ["Age", "Sex", "Ethnicity", "Parent Education", "Region"],
+      "demo_cross_tabs": [
+        "Age × Sex", "Age × Ethnicity", "Age × Parent Education", "Age × Region",
+        "Sex × Ethnicity", "Sex × Parent Education", "Sex × Region",
+        "Ethnicity × Parent Education", "Ethnicity × Region", "Parent Education × Region"
+      ],
+      "osep": ["OSEP"],
+      "clinical": ["Clinical"]
+    }
+  },
+  "resources": {
+    "demographic_template": "profiles/_shared/templates/SCOPE_Demographic_Table_Templates.xlsx",
+    "targeted_swap_template": "CELF6/templates/targeted_swap/CELF6_DEMO_OSEP_tables.xlsx"
+  },
+  "workflow_inputs": {
+    "sample_optimization": [
+      {"role": "master_dataset", "group": "CASE DATA", "label": "CELF-6 STDZ master dataset", "status": "required", "kind": "file", "accepted_types": [".sas7bdat", ".xlsx", ".csv"], "purpose": "Complete eligible CELF-6 case universe, including clinical and OSEP fields.", "adapter": "celf6_case_universe"},
+      {"role": "current_sample", "group": "SAMPLE", "label": "Current selected sample", "status": "required", "kind": "file", "accepted_types": [".xlsx"], "purpose": "Cases selected before optimization.", "adapter": "celf6_current_sample"},
+      {"role": "target_specification", "group": "TARGETS", "label": "CELF-6 target specification", "status": "required", "kind": "file", "accepted_types": [".xlsx", ".csv", ".json"], "purpose": "Age-band, demographic, OSEP, and clinical targets.", "adapter": "celf6_targets"}
+    ],
+    "recruitment_planning": [
+      {"role": "recruitment_targets", "group": "TARGETS", "label": "Recruitment targets workbook", "status": "required", "kind": "file", "accepted_types": [".xlsx"], "purpose": "Canonical target table derived from the Research Plan.", "adapter": "scope_recruitment_targets"},
+      {"role": "recruitment_progress", "group": "PROGRESS", "label": "Field Research progress workbook", "status": "optional", "kind": "file", "accepted_types": [".xlsx", ".csv"], "purpose": "Current recruited or usable counts.", "adapter": "scope_recruitment_progress"}
+    ],
+    "targeted_swap": [
+      {"role": "swap_sample", "group": "SAMPLE", "label": "Existing SCOPE-selected sample", "status": "required", "kind": "file", "accepted_types": [".xlsx"], "purpose": "The sample to update without rerunning CP-SAT.", "adapter": "canonical_sample"},
+      {"role": "swap_available_pool", "group": "CASE DATA", "label": "Candidate / available pool", "status": "required", "kind": "file", "accepted_types": [".xlsx"], "purpose": "Eligible replacement candidates.", "adapter": "canonical_pool"}
+    ]
+  }
+}

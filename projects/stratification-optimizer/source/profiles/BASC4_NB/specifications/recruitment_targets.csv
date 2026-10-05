@@ -1,0 +1,27 @@
+Dimension,Category,Target_N,Tolerance_N
+Form and Age,TRS_C / age group 3,200,0
+Form and Age,TRS_C / age group 4,200,0
+Form and Age,TRS_A / age group 5,200,0
+Form and Age,TRS_A / age group 6,200,0
+Form and Age,PRS_C / age group 3,200,0
+Form and Age,PRS_C / age group 4,200,0
+Form and Age,PRS_A / age group 5,200,0
+Form and Age,PRS_A / age group 6,200,0
+Form and Age,SRP_C / age group 4,400,0
+Form and Age,SRP_A / age group 5,200,0
+Form and Age,SRP_A / age group 6,200,0
+Sex,Female,1200,0
+Sex,Male,1200,0
+Ethnicity,BL,480,0
+Ethnicity,AS,480,0
+Ethnicity,HI,480,0
+Ethnicity,OT,480,0
+Ethnicity,WH,480,0
+Education,1,480,0
+Education,2,480,0
+Education,3,720,0
+Education,4,720,0
+Region,MW,600,0
+Region,NE,600,0
+Region,SO,600,0
+Region,WE,600,0

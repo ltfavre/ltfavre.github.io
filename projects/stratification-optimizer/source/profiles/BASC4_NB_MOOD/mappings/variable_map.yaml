@@ -1,0 +1,17 @@
+version: 1
+canonical_fields:
+  teid: teid
+  form: vform
+  age: agey
+  age_group: agegrp
+  sex: sex
+  ethnicity: eth
+  education: edl
+  region: region
+  language: testlang
+  study_type: study
+missing_value_codes: ["", NA, N/A, Missing, 999]
+administration:
+  first_administration_only: true
+  exclude_retests: true
+  exclude_other_raters: true

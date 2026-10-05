@@ -1,0 +1,214 @@
+# Test/form configuration for BASC-4 NB — Mood Prenorming Sample
+#
+# Mood's legacy scripts are the most advanced generation of the three: they
+# add a per-form env var prefix (standardized away here, see ASD config
+# comment), a phase-2 solver time budget with graceful fallback, two extra
+# deliverable workbooks, a Part-A guard confirming Part B input came from
+# Mood's own scored data, and derive missing agegrp/OSEP-flag columns from
+# raw age/CID/study fields instead of requiring them precomputed.
+
+display_name: "BASC-4 NB — Mood"
+project: MOOD
+target_flag: tmp_EBD
+target_pct: 0.7
+sex_col: sex
+female_value: "F"
+male_value: "M"
+
+demo_cols: [sex, eth, edl, region]
+flag_cols: [tmp_ADHD, tmp_EBD, tmp_ASD, tmp_DD, tmp_SLD, tmp_SLI, tmp_OTHER]
+age_source_cols: [agey, basc4_agey, o_basc4_agey, adjagey]
+key_cols: [teid, vform, agegrp]
+valid_edl_values: ["1", "2", "3", "4"]
+
+vform_order: [TRS_C, TRS_A, PRS_C, PRS_A, SRP_C, SRP_A]
+form_families: [TRS, PRS, SRP]
+
+pool_rules:
+  TRS_C:
+    file: basc4nb_mood_scored_trsc_be.sas7bdat
+    standard_testid: [5755, 5797, 6010, 6015]
+    exclude_testid: [5763, 5771, 5803, 5809]
+    agegrp: [3, 4]
+  TRS_A:
+    file: basc4nb_mood_scored_trsa_be.sas7bdat
+    standard_testid: [5758, 5800, 6011, 6016]
+    exclude_testid: [5766, 5773, 5806, 5811]
+    agegrp: [5, 6]
+  PRS_C:
+    file: basc4nb_mood_scored_prsc_be.sas7bdat
+    standard_testid: [5756, 5798, 5940, 5953]
+    exclude_testid: [5764, 5772, 5804, 5810]
+    agegrp: [3, 4]
+  PRS_A:
+    file: basc4nb_mood_scored_prsa_be.sas7bdat
+    standard_testid: [5759, 5801, 5942, 5955]
+    exclude_testid: [5767, 5774, 5807, 5812]
+    agegrp: [5, 6]
+  SRP_C:
+    file: basc4nb_mood_scored_srpc_be.sas7bdat
+    standard_testid: [5757, 5799, 5941, 5954]
+    exclude_testid: [5765, 5805]
+    agegrp: [4]
+  SRP_A:
+    file: basc4nb_mood_scored_srpa_be.sas7bdat
+    standard_testid: [5760, 5802, 5943, 5956]
+    exclude_testid: [5768, 5808]
+    agegrp: [5, 6]
+
+target_cell_n:
+  - {vform: TRS_C, agegrp: 3, n: 200}
+  - {vform: TRS_C, agegrp: 4, n: 200}
+  - {vform: TRS_A, agegrp: 5, n: 200}
+  - {vform: TRS_A, agegrp: 6, n: 200}
+  - {vform: PRS_C, agegrp: 3, n: 200}
+  - {vform: PRS_C, agegrp: 4, n: 200}
+  - {vform: PRS_A, agegrp: 5, n: 200}
+  - {vform: PRS_A, agegrp: 6, n: 200}
+  - {vform: SRP_C, agegrp: 4, n: 400}
+  - {vform: SRP_A, agegrp: 5, n: 200}
+  - {vform: SRP_A, agegrp: 6, n: 200}
+
+final_total_n: 2400
+
+osep_targets:
+  tmp_ADHD: {target_pct: 5.0, weight: 40000}
+  tmp_clin: {min_pct: 11.0, max_pct: 13.0, weight: 200000}
+  tmp_EBD: {target_pct: 0.70, weight: 1000000}
+  tmp_ASD: {target_pct: 2.00, weight: 40000}
+  tmp_DD: {target_pct: 0.70, weight: 40000}
+  tmp_SLD: {target_pct: 3.00, weight: 40000}
+  tmp_SLI: {target_pct: 2.00, weight: 40000}
+
+demo_target_sheets: {trs: TRS, prs: PRS, srp: SRP}
+demo_write_layout:
+  agegrp_rows: {3: 8, 4: 10, 5: 12, 6: 14}
+  srp_agegrp_rows: {4: 8, 5: 10, 6: 12}
+  osep_form_to_col: {TRS_C: B, TRS_A: C, PRS_C: D, PRS_A: E, SRP_C: F, SRP_A: G}
+  osep_flag_to_row: {tmp_ADHD: 3, tmp_EBD: 4, tmp_ASD: 5, tmp_DD: 6, tmp_SLD: 7, tmp_SLI: 8, tmp_OTHER: 9, tmp_clin: 10}
+  byage_min_age: 6
+  byage_max_age: 18
+
+default_paths:
+  default_project_dir: "C:\\Users\\UFAVRLA\\PythonProjects\\BASC4_Prenorming"
+  fr_teid_file: "data_raw/teid_lists/Mood/fr_teid.xlsx"
+  fr_admin_sheets: [mdtch, mdpar, mdself]
+  default_master_input: "outputs/deliverables/Mood/basc4nb_mood_final_teids.xlsx"
+  default_master_sheet: teid_list
+  case_swap_dir: "outputs/qa_tables"
+  target_workbook: "documentation/Demo and OSEP Targets Template.xlsx"
+  # Official Mood scored data lives in the sibling scoring project.
+  scored_data_dir: "..\\BASC4_NB_Scoring\\qa\\official_data\\Mood\\Mood_Scores"
+  part_a_output_root: "outputs/optimization_engine_mood_part_a"
+  part_b_output_root: "outputs/optimization_engine_mood_part_b"
+  case_swap_files: []
+
+output_names:
+  updated_teid: BASC4NB_Mood_updated_TEIDlist_post_stratification.xlsx
+  demo_osep: BASC4NB_Mood_DEMO_OSEP_tables_post_stratification.xlsx
+  swap_table: BASC4NB_Mood_TEID_swap_stratification_tables.xlsx
+  selected_teid: BASC4NB_Mood_TEID_selected_post_stratification.xlsx
+  available_pool: BASC4NB_Mood_TEID_available_pool_post_stratification.xlsx
+
+engine_params:
+  max_candidates_per_remove: 20
+  num_workers: 8
+  scale: 1000
+  demo_weight: 1
+  swap_weight: 10
+  swap_lock_cols: [vform, agegrp]
+  max_solver_seconds: 300
+  phase2_max_solver_seconds: 60
+
+# Mood-specific behavior (matches its legacy scripts exactly):
+set_project_column: true
+rebuild_available_pool_from_universe: true
+derive_agegrp_if_missing: true
+expected_scored_source: "qa/official_data/mood/mood_scores"
+
+flag_study_patterns:
+  tmp_ADHD: "C_BASC4_ADHD|OSEP_ADHD"
+  tmp_ASD: "C_BASC4_ASD|OSEP_AUT"
+  tmp_EBD: "C_BASC4_EBD|OSEP_ED"
+  tmp_DD: "C_BASC4_IDD|OSEP_DD|OSEP_ID"
+  tmp_SLD: "OSEP_SLD"
+  tmp_SLI: "OSEP_SLI"
+  tmp_OTHER: "C_BASC4_DEP|C_BASC4_PTSD|C_BASC4_TBI|OSEP_GT"
+
+cid_groups:
+  ADHD: [CID327, CID328, CID329, CID330]
+  ASD: [CID324, CID333, CID510]
+  DD: [CID387, CID388, CID397, CID418, CID438, CID439, CID440, CID443, CID469, CID475, CID750]
+  EBD: [CID310, CID319, CID338, CID386, CID404, CID425, CID437, CID445, CID461, CID487, CID489, CID515, CID544, CID629, CID631, CID653, CID710, CID743, CID751, CID756]
+  SLD: [CID353, CID399, CID448, CID451, CID453, CID456, CID563, CID564, CID624, CID669, CID679, CID681, CID822, CID831, CID832, CID833]
+  SLI: [CID323, CID366, CID415, CID447, CID471, CID569, CID667, CID838, CID1563, CID1564]
+  OTHER: [CID309, CID317, CID318, CID322, CID335, CID340, CID342, CID353, CID354, CID371, CID387, CID389, CID394, CID403, CID411, CID412, CID418, CID428, CID495, CID512, CID521, CID546, CID578, CID593, CID609, CID628, CID631, CID687, CID688, CID689, CID691, CID697, CID747, CID823]
+
+export_cols:
+  - project
+  - vform
+  - agegrp
+  - teid
+  - source_file
+  - testid
+  - adminorder
+  - sex
+  - eth
+  - ethdesc
+  - edl
+  - edcalcdesc
+  - region
+  - agey
+  - agem
+  - aged
+  - adjagey
+  - study
+  - services
+  - diagnosis
+  - tmp_ADHD
+  - tmp_EBD
+  - tmp_ASD
+  - tmp_DD
+  - tmp_SLD
+  - tmp_SLI
+  - tmp_OTHER
+  - tmp_clin
+  - part_a_added_for_exact_sex_balance
+
+export_priority_cols:
+  - project
+  - vform
+  - form_type
+  - teid_sheet
+  - teid
+  - qtype
+  - ctype
+  - edition
+  - testlang
+  - testname
+  - sex
+  - eth
+  - ethdesc
+  - edl
+  - edcalcdesc
+  - region
+  - agey
+  - agem
+  - aged
+  - adjagey
+  - study
+  - services
+  - diagnosis
+  - tmp_ADHD
+  - tmp_EBD
+  - tmp_ASD
+  - tmp_DD
+  - tmp_SLD
+  - tmp_SLI
+  - tmp_OTHER
+  - tmp_clin
+  - agegrp
+  - testid
+  - adminorder
+  - source_file
+  - part_b_added_for_sex_n_balance
