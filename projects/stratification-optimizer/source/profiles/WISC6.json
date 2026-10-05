@@ -1,0 +1,139 @@
+{
+  "id": "WISC6",
+  "display_name": "WISC-6",
+  "edition": "6",
+  "market": "United States",
+  "version": "1.0",
+  "status": "Validated",
+  "source_config": "",
+  "forms": ["WISC6_P"],
+  "demographics": ["sex", "eth", "edl", "region"],
+  "target_flags": [
+    "OSEP_ADHD_P", "OSEP_AUT_P", "OSEP_DD_P", "OSEP_ED_P", "OSEP_MD_P",
+    "OSEP_OI_P", "OSEP_OHI_P", "OSEP_SLD_P", "OSEP_SI_P", "OSEP_TBI_P", "tmp_clin"
+  ],
+  "runnable": true,
+  "capabilities": {
+    "recruitment_planning": true,
+    "sample_optimization": false,
+    "targeted_swap": true
+  },
+  "missing": {
+    "sample_optimization": ["SCOPE connection for the validated WISC-6 optimizer"]
+  },
+  "schema_mapping": {
+    "teid": "teid",
+    "form": "vform",
+    "age": "agey",
+    "age_group": "agegrp",
+    "sex": "sex",
+    "ethnicity": "eth",
+    "education": "edl",
+    "region": "region",
+    "language": "testlang",
+    "study_type": "studytype"
+  },
+  "reporting_variables": {
+    "Age": {
+      "canonical": "age", "field": "agey", "display": "Age",
+      "levels": [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+    },
+    "Sex": {
+      "canonical": "sex", "field": "sex", "display": "Sex",
+      "levels": [{"value": "F", "label": "Female"}, {"value": "M", "label": "Male"}]
+    },
+    "RaceEth": {
+      "canonical": "ethnicity", "field": "eth", "display": "Race/Ethnicity",
+      "levels": [
+        {"value": "AS", "label": "Asian"}, {"value": "BL", "label": "Black/African American"},
+        {"value": "HI", "label": "Hispanic/Latino"}, {"value": "OT", "label": "Other"},
+        {"value": "WH", "label": "White"}
+      ]
+    },
+    "PED": {
+      "canonical": "education", "field": "edl", "display": "Parent Education",
+      "levels": [
+        {"value": "1", "label": "PED 1"}, {"value": "2", "label": "PED 2"},
+        {"value": "3", "label": "PED 3"}, {"value": "4", "label": "PED 4"},
+        {"value": "5", "label": "PED 5"}
+      ]
+    },
+    "Region": {
+      "canonical": "region", "field": "region", "display": "Region",
+      "levels": [
+        {"value": "MW", "label": "Midwest"}, {"value": "NE", "label": "Northeast"},
+        {"value": "SO", "label": "South"}, {"value": "WE", "label": "West"}
+      ]
+    }
+  },
+  "age_structure": [
+    "6:0–6:11", "7:0–7:11", "8:0–8:11", "9:0–9:11", "10:0–10:11",
+    "11:0–11:11", "12:0–12:11", "13:0–13:11", "14:0–14:11",
+    "15:0–15:11", "16:0–16:11"
+  ],
+  "osep_mappings": {
+    "osep": ["ADHD", "ASD/AUT", "DD", "ED", "MD", "OI", "OHI", "SLD", "SI", "TBI"],
+    "clinical": ["GT", "IDMI", "IDMO", "LDR", "LDE"]
+  },
+  "eligibility_rules": [
+    "Test ID 6051; first administration only",
+    "CSS extract status Completed",
+    "EE status CF Usable and test status Usable",
+    "Ages 6–16 and sex F/M",
+    "Validated ethnicity, education, and region category sets"
+  ],
+  "test_ids": ["6051"],
+  "languages": ["English"],
+  "study_types": ["WISC6_STDZ_P", "Clinical", "OSEP"],
+  "reporting": {
+    "recruitment_template": "builtin:field_research",
+    "recruitment": {
+      "WISC6_STDZ_P": {
+        "template": "WISC6/templates/recruitment/WISC6_STDZ_Field_Research_Report.xlsx",
+        "age_bands": ["6:0–6:11", "7:0–7:11", "8:0–8:11", "9:0–9:11", "10:0–10:11", "11:0–11:11", "12:0–12:11", "13:0–13:11", "14:0–14:11", "15:0–15:11", "16:0–16:11"],
+        "required_tables": ["Age", "Sex", "Ethnicity", "Education", "Region", "Language", "Form"]
+      },
+      "Clinical": {
+        "template": "WISC6/templates/recruitment/WISC6_Clinical_Field_Research_Report.xlsx",
+        "age_bands": ["6:0–6:11", "7:0–7:11", "8:0–8:11", "9:0–9:11", "10:0–10:11", "11:0–11:11", "12:0–12:11", "13:0–13:11", "14:0–14:11", "15:0–15:11", "16:0–16:11"],
+        "required_tables": ["Age", "Sex", "Ethnicity", "Education", "Region", "Clinical", "Form"]
+      },
+      "OSEP": {
+        "template": "WISC6/templates/recruitment/WISC6_OSEP_Field_Research_Report.xlsx",
+        "age_bands": ["6:0–6:11", "7:0–7:11", "8:0–8:11", "9:0–9:11", "10:0–10:11", "11:0–11:11", "12:0–12:11", "13:0–13:11", "14:0–14:11", "15:0–15:11", "16:0–16:11"],
+        "required_tables": ["Age", "Sex", "Ethnicity", "Education", "Region", "OSEP", "Form"]
+      }
+    },
+    "optimization_template": "profiles/_shared/templates/SCOPE_Demographic_Table_Templates.xlsx",
+    "targeted_swap_template": "builtin:targeted_swap",
+    "required_tables": {
+      "demographics": ["Age", "Sex", "RaceEth", "PED", "Region"],
+      "demo_cross_tabs": [
+        "Age × Sex", "Age × RaceEth", "Age × PED", "Age × Region",
+        "Sex × RaceEth", "Sex × PED", "Sex × Region",
+        "RaceEth × PED", "RaceEth × Region", "PED × Region"
+      ],
+      "demo_three_way": ["Age × RaceEth × PED"],
+      "osep": ["OSEP"],
+      "clinical": ["Clinical"]
+    }
+  },
+  "resources": {
+    "demographic_template": "profiles/_shared/templates/SCOPE_Demographic_Table_Templates.xlsx"
+  },
+  "workflow_inputs": {
+    "sample_optimization": [
+      {"role": "master_dataset", "group": "CASE DATA", "label": "WISC-6 STDZ master dataset", "status": "required", "kind": "file", "accepted_types": [".sas7bdat", ".xlsx", ".csv"], "purpose": "Complete WISC-6 participant universe with eligibility and clinical/OSEP fields.", "adapter": "wisc6_case_universe"},
+      {"role": "current_sample", "group": "SAMPLE", "label": "Current selected sample", "status": "required", "kind": "file", "accepted_types": [".xlsx"], "purpose": "Cases selected before optimization.", "adapter": "wisc6_current_sample"},
+      {"role": "target_specification", "group": "TARGETS", "label": "WISC-6 target specification", "status": "required", "kind": "file", "accepted_types": [".xlsx", ".sas7bdat", ".csv", ".json"], "purpose": "Age, sex, demographic, OSEP, and clinical targets.", "adapter": "wisc6_targets"}
+    ],
+    "recruitment_planning": [
+      {"role": "recruitment_targets", "group": "TARGETS", "label": "Recruitment targets workbook", "status": "required", "kind": "file", "accepted_types": [".xlsx"], "purpose": "Canonical target table derived from the Research Plan.", "adapter": "scope_recruitment_targets"},
+      {"role": "recruitment_progress", "group": "PROGRESS", "label": "Field Research progress workbook", "status": "optional", "kind": "file", "accepted_types": [".xlsx", ".csv"], "purpose": "Current recruited or usable counts.", "adapter": "scope_recruitment_progress"}
+    ],
+    "targeted_swap": [
+      {"role": "swap_sample", "group": "SAMPLE", "label": "Existing SCOPE-selected sample", "status": "required", "kind": "file", "accepted_types": [".xlsx"], "purpose": "The sample to update without rerunning CP-SAT.", "adapter": "canonical_sample"},
+      {"role": "swap_available_pool", "group": "CASE DATA", "label": "Candidate / available pool", "status": "required", "kind": "file", "accepted_types": [".xlsx"], "purpose": "Eligible replacement candidates.", "adapter": "canonical_pool"}
+    ]
+  }
+}

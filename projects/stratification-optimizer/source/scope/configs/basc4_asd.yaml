@@ -1,0 +1,202 @@
+# Test/form configuration for BASC-4 NB — ASD Prenorming Sample
+#
+# ASD's legacy scripts ("Optimization Engine ASD Part A/B.py") were an older
+# code generation than ADHD's: hardcoded paths (no OPT_ENGINE_* overrides),
+# a test-specific env var prefix, and no DISABLE_OPTIMIZATION/forced-swap
+# support. Per the "upgrade to the ADHD-line's fuller feature set" decision,
+# this config runs ASD through the same generalized engine ADHD uses
+# (env var overrides, DISABLE_OPTIMIZATION, FORCED_ONLY_SWAP, master-input
+# fallback all come for free), while set_project_column/
+# validate_target_capacity/filter_master_edl reproduce ASD's own two real
+# behavioral differences from ADHD.
+
+display_name: "BASC-4 NB — ASD"
+project: ASD
+target_flag: tmp_ASD
+target_pct: 2.0
+sex_col: sex
+female_value: "F"
+male_value: "M"
+
+demo_cols: [sex, eth, edl, region]
+flag_cols: [tmp_ADHD, tmp_EBD, tmp_ASD, tmp_DD, tmp_SLD, tmp_SLI, tmp_OTHER]
+age_source_cols: [agey, basc4_agey, o_basc4_agey, adjagey]
+key_cols: [teid, vform, agegrp]
+valid_edl_values: ["1", "2", "3", "4"]
+
+vform_order: [TRS_C, TRS_A, PRS_C, PRS_A, SRP_C, SRP_A]
+form_families: [TRS, PRS, SRP]
+
+pool_rules:
+  TRS_C:
+    file: basc4nb_scored_trsc.sas7bdat
+    standard_testid: [5842, 5797]
+    exclude_testid: []
+    agegrp: [3, 4]
+  TRS_A:
+    file: basc4nb_scored_trsa.sas7bdat
+    standard_testid: [5845, 5800]
+    exclude_testid: []
+    agegrp: [5, 6]
+  PRS_C:
+    file: basc4nb_scored_prsc.sas7bdat
+    standard_testid: [5843, 5798]
+    exclude_testid: []
+    agegrp: [3, 4]
+  PRS_A:
+    file: basc4nb_scored_prsa.sas7bdat
+    standard_testid: [5846, 5801]
+    exclude_testid: []
+    agegrp: [5, 6]
+  SRP_C:
+    file: basc4nb_scored_srpc.sas7bdat
+    standard_testid: [5844, 5799]
+    exclude_testid: []
+    agegrp: [4]
+  SRP_A:
+    file: basc4nb_scored_srpa.sas7bdat
+    standard_testid: [5847, 5802]
+    exclude_testid: []
+    agegrp: [5, 6]
+
+target_cell_n:
+  - {vform: TRS_C, agegrp: 3, n: 200}
+  - {vform: TRS_C, agegrp: 4, n: 200}
+  - {vform: TRS_A, agegrp: 5, n: 200}
+  - {vform: TRS_A, agegrp: 6, n: 200}
+  - {vform: PRS_C, agegrp: 3, n: 200}
+  - {vform: PRS_C, agegrp: 4, n: 200}
+  - {vform: PRS_A, agegrp: 5, n: 200}
+  - {vform: PRS_A, agegrp: 6, n: 200}
+  - {vform: SRP_C, agegrp: 4, n: 400}
+  - {vform: SRP_A, agegrp: 5, n: 200}
+  - {vform: SRP_A, agegrp: 6, n: 200}
+
+final_total_n: 2400
+
+osep_targets:
+  tmp_ADHD: {target_pct: 5.0, weight: 40000}
+  tmp_clin: {min_pct: 11.0, max_pct: 12.0, weight: 200000}
+  tmp_EBD: {target_pct: 0.70, weight: 40000}
+  tmp_ASD: {target_pct: 2.00, weight: 1000000}
+  tmp_DD: {target_pct: 0.70, weight: 40000}
+  tmp_SLD: {target_pct: 3.00, weight: 40000}
+  tmp_SLI: {target_pct: 2.00, weight: 40000}
+
+demo_target_sheets: {trs: TRS, prs: PRS, srp: SRP}
+demo_write_layout:
+  agegrp_rows: {3: 8, 4: 10, 5: 12, 6: 14}
+  srp_agegrp_rows: {4: 8, 5: 10, 6: 12}
+  osep_form_to_col: {TRS_C: B, TRS_A: C, PRS_C: D, PRS_A: E, SRP_C: F, SRP_A: G}
+  osep_flag_to_row: {tmp_ADHD: 3, tmp_EBD: 4, tmp_ASD: 5, tmp_DD: 6, tmp_SLD: 7, tmp_SLI: 8, tmp_OTHER: 9, tmp_clin: 10}
+  byage_min_age: 6
+  byage_max_age: 18
+
+default_paths:
+  default_project_dir: "C:\\Users\\UFAVRLA\\PythonProjects\\BASC4_Prenorming"
+  fr_teid_file: "data_raw/teid_lists/ASD/fr_teid.xlsx"
+  fr_admin_sheets: [asdtch, asdpar, asdself]
+  # ASD's legacy script had no default-master-input fallback at all; this
+  # path follows the same convention Mood's script already uses, so the
+  # generalized engine's fallback logic (a new-for-ASD feature) has a
+  # sensible target if the FR TEID workbook is ever missing.
+  default_master_input: "outputs/deliverables/ASD/basc4nb_asd_final_teids.xlsx"
+  default_master_sheet: teid_list
+  case_swap_dir: "outputs/qa_tables"
+  target_workbook: "documentation/Demo and OSEP Targets Template.xlsx"
+  scored_data_dir: "data_raw/source_sas_data/ASD"
+  part_a_output_root: "outputs/optimization_engine_asd_part_a"
+  part_b_output_root: "outputs/optimization_engine_asd_part_b"
+  case_swap_files:
+    - ASD_PRS_A_case_swap.xlsx
+    - ASD_PRS_C_case_swap.xlsx
+    - ASD_TRS_A_case_swap.xlsx
+    - ASD_TRS_C_case_swap.xlsx
+
+output_names:
+  updated_teid: BASC4NB_ASD_updated_TEIDlist_post_stratification.xlsx
+  demo_osep: BASC4NB_ASD_DEMO_OSEP_tables_post_stratification.xlsx
+  swap_table: BASC4NB_ASD_TEID_swap_stratification_tables.xlsx
+
+engine_params:
+  max_candidates_per_remove: 20
+  num_workers: 8
+  scale: 1000
+  demo_weight: 1
+  swap_weight: 10
+  swap_lock_cols: [vform, agegrp]
+  max_solver_seconds: 300
+
+# ASD-specific behavior (matches its legacy scripts exactly):
+set_project_column: true
+validate_target_capacity: true
+filter_master_edl: false
+
+export_cols:
+  - project
+  - vform
+  - agegrp
+  - teid
+  - source_file
+  - testid
+  - adminorder
+  - sex
+  - eth
+  - ethdesc
+  - edl
+  - edcalcdesc
+  - region
+  - agey
+  - agem
+  - aged
+  - adjagey
+  - study
+  - services
+  - diagnosis
+  - tmp_ADHD
+  - tmp_EBD
+  - tmp_ASD
+  - tmp_DD
+  - tmp_SLD
+  - tmp_SLI
+  - tmp_OTHER
+  - tmp_clin
+  - part_a_added_for_exact_sex_balance
+
+export_priority_cols:
+  - project
+  - vform
+  - form_type
+  - teid_sheet
+  - teid
+  - qtype
+  - ctype
+  - edition
+  - testlang
+  - testname
+  - sex
+  - eth
+  - ethdesc
+  - edl
+  - edcalcdesc
+  - region
+  - agey
+  - agem
+  - aged
+  - adjagey
+  - study
+  - services
+  - diagnosis
+  - tmp_ADHD
+  - tmp_EBD
+  - tmp_ASD
+  - tmp_DD
+  - tmp_SLD
+  - tmp_SLI
+  - tmp_OTHER
+  - tmp_clin
+  - agegrp
+  - testid
+  - adminorder
+  - source_file
+  - part_b_added_for_sex_n_balance

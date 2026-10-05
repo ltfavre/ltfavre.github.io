@@ -1,0 +1,18 @@
+{
+  "id": "VINELAND3",
+  "display_name": "Vineland-3",
+  "version": "0.1",
+  "status": "Not Yet Configured",
+  "source_config": "",
+  "forms": [],
+  "demographics": ["sex", "eth", "edl", "region"],
+  "target_flags": [],
+  "runnable": false,
+  "capabilities": {"recruitment_planning": false, "sample_optimization": false, "targeted_swap": false},
+  "missing": {
+    "recruitment_planning": ["Research Plan target mappings", "age structure"],
+    "sample_optimization": ["schema mapping", "eligibility rules", "engine configuration"],
+    "targeted_swap": ["canonical locks and eligibility rules"]
+  },
+  "schema_mapping": {}, "age_structure": [], "eligibility_rules": [], "languages": [], "study_types": []
+}

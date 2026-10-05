@@ -1,0 +1,96 @@
+{
+  "id": "BASC4_NB",
+  "display_name": "BASC-4 Narrowbands",
+  "version": "1.3",
+  "status": "Validated",
+  "capabilities": {
+    "recruitment_planning": true,
+    "sample_optimization": true,
+    "targeted_swap": true
+  },
+  "source_config": "basc4_adhd",
+  "forms": ["TRS_C", "TRS_A", "PRS_C", "PRS_A", "SRP_C", "SRP_A"],
+  "demographics": ["sex", "eth", "edl", "region"],
+  "target_flags": ["tmp_ADHD", "tmp_EBD", "tmp_ASD", "tmp_DD", "tmp_SLD", "tmp_SLI", "tmp_clin"],
+  "schema_mapping": {"teid": "teid", "form": "vform", "age": "agey", "age_group": "agegrp", "sex": "sex", "ethnicity": "eth", "education": "edl", "region": "region", "language": "testlang", "study_type": "study"},
+  "reporting_variables": {
+    "Age": {"canonical": "age_group", "field": "agegrp", "display": "Age Group", "levels": [3, 4, 5, 6]},
+    "Sex": {"canonical": "sex", "field": "sex", "display": "Sex", "levels": [{"value": "F", "label": "Female"}, {"value": "M", "label": "Male"}]},
+    "Ethnicity": {"canonical": "ethnicity", "field": "eth", "display": "Race/Ethnicity", "levels": [{"value": "AS", "label": "Asian"}, {"value": "BL", "label": "Black/African American"}, {"value": "HI", "label": "Hispanic/Latino"}, {"value": "OT", "label": "Other"}, {"value": "WH", "label": "White"}]},
+    "Education": {"canonical": "education", "field": "edl", "display": "Education", "levels": ["1", "2", "3", "4"]},
+    "Region": {"canonical": "region", "field": "region", "display": "Region", "levels": [{"value": "MW", "label": "Midwest"}, {"value": "NE", "label": "Northeast"}, {"value": "SO", "label": "South"}, {"value": "WE", "label": "West"}]}
+  },
+  "age_structure": ["Child", "Adolescent"],
+  "osep_mappings": {"flags": ["tmp_ADHD", "tmp_EBD", "tmp_ASD", "tmp_DD", "tmp_SLD", "tmp_SLI"]},
+  "eligibility_rules": ["Standardization administrations only", "Retests and other-rater records excluded", "Form and age eligibility enforced"],
+  "languages": ["English", "Spanish"],
+  "study_types": ["STDZ", "Clinical", "Validity"],
+  "target_families": ["Census", "OSEP", "Clinical"],
+  "default_target_n": 2400,
+  "reporting": {
+    "recruitment_template": "builtin:field_research",
+    "optimization_template": "profiles/_shared/templates/SCOPE_Demographic_Table_Templates.xlsx",
+    "targeted_swap_template": "builtin:targeted_swap",
+    "required_tables": {
+      "demographics": ["Age", "Sex", "Ethnicity", "Education", "Region"],
+      "demo_cross_tabs": [
+        "Age × Sex", "Age × Ethnicity", "Age × Education", "Age × Region",
+        "Sex × Ethnicity", "Sex × Education", "Sex × Region",
+        "Ethnicity × Education", "Ethnicity × Region", "Education × Region"
+      ],
+      "osep": ["OSEP"],
+      "clinical": ["Clinical"]
+    }
+  },
+  "resources": {
+    "demographic_template": "profiles/_shared/templates/SCOPE_Demographic_Table_Templates.xlsx"
+  },
+  "workflow_inputs": {
+    "sample_optimization": [
+      {
+        "role": "master_dataset", "group": "CASE DATA", "label": "Master / STDZ dataset",
+        "status": "required", "kind": "file", "accepted_types": [".xlsx", ".xls", ".csv", ".sas7bdat"],
+        "purpose": "The complete STDZ/master source used to establish who can potentially be selected.",
+        "adapter": "basc_case_universe"
+      },
+      {
+        "role": "scored_data", "group": "CASE DATA", "label": "Scored-data folder",
+        "status": "required", "kind": "folder", "accepted_types": [".sas7bdat"],
+        "purpose": "Provides form, eligibility, demographic, and candidate-pool records used by BASC preparation.",
+        "adapter": "basc_scored_directory"
+      },
+      {
+        "role": "case_review_data", "group": "CASE DATA", "label": "Prior case-review folder",
+        "status": "optional", "kind": "folder", "accepted_types": [".xlsx"],
+        "purpose": "Optional approved case-review or forced-swap information.",
+        "adapter": "basc_case_review"
+      },
+      {
+        "role": "current_sample", "group": "SAMPLE", "label": "Current selected sample",
+        "status": "optional", "kind": "file", "accepted_types": [".xlsx", ".xlsm"],
+        "purpose": "Use only for an intentional re-optimization of an already selected sample.",
+        "adapter": "basc_current_sample"
+      },
+      {
+        "role": "target_specification", "group": "TARGETS", "label": "Research Plan or SCOPE Target Template",
+        "status": "required", "kind": "file", "accepted_types": [".xlsx", ".xlsm", ".docx", ".csv", ".json"],
+        "purpose": "Authoritative target source. Structured DOCX tables are supported; otherwise use the SCOPE Target Template.",
+        "adapter": "basc_target_workbook"
+      },
+      {
+        "role": "initial_teid_source", "group": "CASE DATA", "label": "All Cases / TEID source",
+        "status": "optional", "kind": "file", "accepted_types": [".xlsx", ".xlsm", ".csv"],
+        "purpose": "Optional profile-supported TEID membership source used to derive the initial sample when it is not encoded in the master dataset.",
+        "adapter": "basc_initial_teids"
+      }
+    ],
+    "recruitment_planning": [
+      {"role": "recruitment_targets", "group": "TARGETS", "label": "Recruitment targets workbook", "status": "required", "kind": "file", "accepted_types": [".xlsx"], "purpose": "Canonical target table derived from the Research Plan.", "adapter": "scope_recruitment_targets"},
+      {"role": "recruitment_progress", "group": "PROGRESS", "label": "Field Research progress workbook", "status": "optional", "kind": "file", "accepted_types": [".xlsx", ".csv"], "purpose": "Current recruited or usable counts.", "adapter": "scope_recruitment_progress"}
+    ],
+    "targeted_swap": [
+      {"role": "swap_sample", "group": "SAMPLE", "label": "Existing SCOPE-selected sample", "status": "required", "kind": "file", "accepted_types": [".xlsx"], "purpose": "The sample to update without rerunning CP-SAT.", "adapter": "canonical_sample"},
+      {"role": "swap_available_pool", "group": "CASE DATA", "label": "Candidate / available pool", "status": "required", "kind": "file", "accepted_types": [".xlsx"], "purpose": "Eligible replacement candidates.", "adapter": "canonical_pool"}
+    ]
+  }
+}

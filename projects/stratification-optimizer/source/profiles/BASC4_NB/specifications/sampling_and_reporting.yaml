@@ -1,0 +1,26 @@
+version: 1
+approved_from: Known-working BASC-4 Narrowbands SOE configuration and target workbook
+sampling:
+  engine_config: basc4_adhd
+  final_n: 2400
+  locks: [vform, agegrp]
+  target_families: [Census, OSEP, Clinical]
+  current_sample_required_for_first_run: false
+  first_administration_only: true
+  exclude_retests: true
+  exclude_other_raters: true
+reporting:
+  diff_formula: Actual percent minus Target percent
+  negative_diff: red font and pale-red fill
+  required_demo_cross_tabs:
+    - Age × Sex
+    - Age × Ethnicity
+    - Age × Education
+    - Age × Region
+    - Sex × Ethnicity
+    - Sex × Education
+    - Sex × Region
+    - Ethnicity × Education
+    - Ethnicity × Region
+    - Education × Region
+reference_note: The original Research Plan can be added here as an administrator-approved reference without being reparsed during normal runs.
